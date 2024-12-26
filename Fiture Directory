@@ -1,0 +1,106 @@
+/// <reference types="cypress"/>
+
+import directory from "../../directory/directory";
+
+describe('Dashboard Directory',() => {
+  it('Filter directory employee name, job title, location',() => {
+     cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+     directory.textLogin().should('have.text','Login');
+     directory.inputUsername().type('admin');
+     directory.inputPassword().type('admin123');  
+     directory.buttonLogin().click();
+     directory.menuDashboard().should('have.text','Dashboard')
+     cy.contains('Directory').click()
+     directory.inputFirstName().type('Peter')
+     directory.inputFullName().contains('Peter Mac Anderson').click()
+     directory.jobTitle().eq(0).click()
+     directory.selectJob().contains('Chief Financial Officer').click()
+     directory.location().eq(1).click()
+     directory.selectLocation().contains('New York Sales Office').click()
+     cy.intercept("GET","**/employees?limit=14&offset=0&locationId=2&empNumber=3&jobTitleId=2").as("directory");
+     directory.buttonSearch().click()
+     cy.wait("@directory").then((intercept) => {expect(intercept.response.statusCode).to.equal(200); });
+  })
+
+ it('Filter directory employee name, job title',() => {
+    cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+    directory.textLogin().should('have.text','Login');
+    directory.inputUsername().type('admin');
+    directory.inputPassword().type('admin123');  
+    directory.buttonLogin().click();
+    directory.menuDashboard().should('have.text','Dashboard')
+    cy.contains('Directory').click()
+    directory.inputFirstName().type('Peter')
+    directory.inputFullName().contains('Peter Mac Anderson').click()
+    directory.jobTitle().eq(0).click()
+    directory.selectJob().contains('Chief Financial Officer').click()
+    cy.intercept("GET","**/employees?limit=14&offset=0&empNumber=3&jobTitleId=2").as("nameJob");
+    directory.buttonSearch().click()
+    cy.wait("@nameJob").then((intercept) => {expect(intercept.response.statusCode).to.equal(200); });
+})
+
+ it('Filter directory employee name',() => {
+     cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+     directory.textLogin().should('have.text','Login');
+     directory.inputUsername().type('admin');
+     directory.inputPassword().type('admin123');  
+     directory.buttonLogin().click();
+     directory.menuDashboard().should('have.text','Dashboard')
+     cy.contains('Directory').click()
+     directory.inputFirstName().type('Peter')
+     directory.inputFullName().contains('Peter Mac Anderson').click()
+     cy.intercept("GET","**/employees?limit=14&offset=0&empNumber=3").as("employeename");
+     directory.buttonSearch().click()
+     cy.wait("@employeename").then((intercept) => {expect(intercept.response.statusCode).to.equal(200); });
+ })
+
+it('Filter directory job title',() => {
+    cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+    directory.textLogin().should('have.text','Login');
+    directory.inputUsername().type('admin');
+    directory.inputPassword().type('admin123');  
+    directory.buttonLogin().click();
+    directory.menuDashboard().should('have.text','Dashboard')
+    cy.contains('Directory').click()
+    directory.jobTitle().eq(0).click()
+    directory.selectJob().contains('Chief Financial Officer').click()
+    cy.intercept("GET","**/employees?limit=14&offset=0&jobTitleId=2").as("jobTitle");
+    directory.buttonSearch().click()
+    cy.wait("@jobTitle").then((intercept) => {expect(intercept.response.statusCode).to.equal(200); });
+ })
+
+  it('Filter directory location',() => {
+     cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+     directory.textLogin().should('have.text','Login');
+     directory.inputUsername().type('admin');
+     directory.inputPassword().type('admin123');  
+     directory.buttonLogin().click();
+     directory.menuDashboard().should('have.text','Dashboard')
+     cy.contains('Directory').click()
+     directory.location().eq(1).click()
+     directory.selectLocation().contains('New York Sales Office').click()
+     cy.intercept("GET","**/employees?limit=14&offset=0&locationId=2").as("location");
+     directory.buttonSearch().click()
+     cy.wait("@location").then((intercept) => {expect(intercept.response.statusCode).to.equal(200); });
+ })
+
+ it('Reset semua data yang sudah di filter',() => {
+     cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+     directory.textLogin().should('have.text','Login');
+     directory.inputUsername().type('admin');
+     directory.inputPassword().type('admin123');  
+     directory.buttonLogin().click();
+     directory.menuDashboard().should('have.text','Dashboard')
+     cy.contains('Directory').click()
+     directory.inputFirstName().type('Peter')
+     directory.inputFullName().contains('Peter Mac Anderson').click()
+     directory.jobTitle().eq(0).click()
+     directory.selectJob().contains('Chief Financial Officer').click()
+     directory.location().eq(1).click()
+     directory.selectLocation().contains('New York Sales Office').click()
+     cy.intercept("GET","**/employees?limit=14&offset=0").as("resetDirectory");
+     directory.buttonSearch().click()
+     directory.buttonReset().click()
+     cy.wait("@resetDirectory").then((intercept) => {expect(intercept.response.statusCode).to.equal(200); });
+  })
+})
