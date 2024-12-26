@@ -1,0 +1,42 @@
+export default class directory {
+
+    static textLogin(){
+        return cy.get('[class="oxd-text oxd-text--h5 orangehrm-login-title"]');
+        }
+    static inputUsername(){
+        return cy.get('[name="username"]');
+        }
+    static inputPassword(){
+        return cy.get('[name="password"]');
+        }
+    static buttonLogin(){
+        return cy.get('[type="submit"]');
+        }
+    static menuDashboard(){
+        return cy.get('[class="oxd-text oxd-text--h6 oxd-topbar-header-breadcrumb-module"]');
+        }
+    static inputFirstName(){
+        return cy.get('[class="oxd-autocomplete-text-input oxd-autocomplete-text-input--active"]')
+    }
+    static inputFullName(){
+        return cy.get('[role="listbox"]')
+    }
+    static jobTitle(){
+        return cy.get('[class="oxd-select-wrapper"]')
+    }
+    static selectJob(){
+        return cy.get('[role="listbox"]')
+    }
+    static location(){
+        return cy.get('[class="oxd-select-wrapper"]')
+    }
+    static selectLocation(){
+        return cy.get('[role="listbox"]')
+    }
+    static buttonSearch(){
+        return cy.get('[type="submit"]');
+    }
+    static buttonReset(){
+        return cy.get('[type="reset"]')
+    }
+}
