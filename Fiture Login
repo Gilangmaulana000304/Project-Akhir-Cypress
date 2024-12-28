@@ -9,10 +9,18 @@ describe('Login Feature',() => {
         loginPage.inputUsername().type('admin');
         loginPage.inputPassword().type('admin123');
         cy.intercept("GET","**/employees/action-summary").as("actionsummary");
+        cy.intercept("GET","**/dashboard/shortcuts").as("shortcut");
+        cy.intercept("GET","**/employees/subunit").as("subunit");
+        cy.intercept("GET","**/employees/locations").as("locations");
+        cy.intercept("GET","**/feed?limit=5&offset=0&sortOrder=DESC&sortField=share.createdAtUtc").as("feed");
         loginPage.buttonLogin().click();
-        cy.wait("@actionsummary").then((intercept) => {expect(intercept.response.statusCode).to.equal(200); });
+        cy.wait("@actionsummary").then((intercept) => {expect(intercept.response.statusCode).to.equal(200); })
+        cy.wait("@shortcut").then((intercept) => {expect(intercept.response.statusCode).to.equal(200); })
+        cy.wait("@subunit").then((intercept) => {expect(intercept.response.statusCode).to.equal(200); })
+        cy.wait("@locations").then((intercept) => {expect(intercept.response.statusCode).to.equal(200); })
+        cy.wait("@feed").then((intercept) => {expect(intercept.response.statusCode).to.equal(200); })
         loginPage.menuDashboard().should('have.text','Dashboard')
-     })
+    }) 
 
      it('Login dengan username benar dan password salah',() => {
         cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
